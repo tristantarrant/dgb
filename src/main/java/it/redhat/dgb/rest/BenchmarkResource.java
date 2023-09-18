@@ -1,5 +1,6 @@
 package it.redhat.dgb.rest;
 
+import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -30,6 +31,10 @@ public class BenchmarkResource {
     @Remote("sftrec") 
     RemoteCache<String, SftRec> sftrec_cache;
 
+    private void log(String name, String msg){
+        LOGGER.info( "[" + name + "] " + msg);
+    }
+    
     @GET
     public String info() {
         return "CDLC - REST EndPoint to manage benchmark data in the cache"; 
@@ -43,14 +48,56 @@ public class BenchmarkResource {
     }
 
     private void loadEntries(BenchmarkLoaderConfiguration data){
-        for(int i=0; i<data.days; i++){
-            for(int j=0; j<data.dailyEntries; j++){
+        String timeInHHMMSS = null;
+        long globalEndTime = 0;
+        long dailyStartTime = 0;
+        long dailyEndTime = 0;
+        long partialStartTime = 0;
+        long partialEndTime = 0;
+        int globalCounter = 0;
+        int counter = 0;
+        long globalStartTime = System.currentTimeMillis();
+        partialStartTime = globalStartTime;
+        for(int i=0; i<data.getDays(); i++){
+            dailyStartTime = System.currentTimeMillis();
+            for(int j=0; j<data.getDailyEntries(); j++){
                 String id = UUID.randomUUID().toString();
                 SftRec recEntry = SftRecBuilder.build(data, i);
                 sftrec_cache.put(id, recEntry);
-                LOGGER.info("inserting new entry with ID: " + id);
+                counter++;
+                globalCounter++;
+                if(counter > 100000){
+                    partialEndTime = System.currentTimeMillis();
+                    Duration duration = Duration.ofMillis(partialEndTime - partialStartTime);
+                    partialStartTime = partialEndTime;
+                    long HH = duration.toHours();
+                    long MM = duration.toMinutesPart();
+                    long SS = duration.toSecondsPart();
+                    timeInHHMMSS = String.format("%02d:%02d:%02d", HH, MM, SS);
+                    counter = 0;
+                    this.log(data.getSessionName(), "inserted " + globalCounter + " entries, partial time frame (100k): " + timeInHHMMSS);
+                }
             }
+            dailyEndTime = System.currentTimeMillis();
+            Duration duration = Duration.ofMillis(dailyEndTime - dailyStartTime);
+            dailyStartTime = dailyEndTime;
+            long HH = duration.toHours();
+            long MM = duration.toMinutesPart();
+            long SS = duration.toSecondsPart();
+            timeInHHMMSS = String.format("%02d:%02d:%02d", HH, MM, SS);
+            this.log(data.getSessionName(), "\n\n==============================================================\n\n");
+            this.log(data.getSessionName(), "completed day " + i + " time frame for this day: " + timeInHHMMSS);
+            this.log(data.getSessionName(), "==============================================================");
         }
+        globalEndTime = System.currentTimeMillis();
+        Duration duration = Duration.ofMillis(globalEndTime - globalStartTime);
+        long HH = duration.toHours();
+        long MM = duration.toMinutesPart();
+        long SS = duration.toSecondsPart();
+        timeInHHMMSS = String.format("%02d:%02d:%02d", HH, MM, SS);
+        this.log(data.getSessionName(), "\n\n==============================================================\n\n");
+        this.log(data.getSessionName(), "inserted " + globalCounter + " entries, timeframe: " + timeInHHMMSS);
+        this.log(data.getSessionName(), "==============================================================");
     }
 
     @GET
@@ -67,8 +114,8 @@ public class BenchmarkResource {
         long entrySize = 0;
         SftRec entry = null;
         int counter = 0;
-        for(int i=0; i<data.days; i++){
-            for(int j=0; j<data.dailyEntries; j++){
+        for(int i=0; i<data.getDays(); i++){
+            for(int j=0; j<data.getDailyEntries(); j++){
                 counter++;
                 id = UUID.randomUUID().toString();
                 idSize += ObjectSizeFetcher.getObjectSize(id);
@@ -77,14 +124,11 @@ public class BenchmarkResource {
                 cacheSize += entrySize;
             }
         }
-        LOGGER.info("\n\n==============================================================\n\n");
-        LOGGER.info("Number of days stored:         " + data.days + "  -  Number of entry for each day:    " + data.dailyEntries);
-        LOGGER.info("Total CACHE size:              " + (idSize + cacheSize));
-        LOGGER.info("Average KEY size:              " + (idSize / counter));
-        LOGGER.info("Average OBJECT size:           " + (cacheSize / counter));
-
+        this.log(data.getSessionName(), "\n\n==============================================================\n\n");
+        this.log(data.getSessionName(), "Number of days stored:         " + data.getDays() + "  -  Number of entry for each day:    " + data.getDailyEntries());
+        this.log(data.getSessionName(), "Total CACHE size:              " + (idSize + cacheSize));
+        this.log(data.getSessionName(), "Average KEY size:              " + (idSize / counter));
+        this.log(data.getSessionName(), "Average OBJECT size:           " + (cacheSize / counter));
     }
 
-
-    
 }

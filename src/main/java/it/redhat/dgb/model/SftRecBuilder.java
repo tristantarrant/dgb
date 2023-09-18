@@ -13,7 +13,7 @@ public class SftRecBuilder {
     static List<String> treps = new ArrayList<>(Arrays.asList("TRRGS", "TRDTI"));
     
     public static SftRec build(BenchmarkLoaderConfiguration data, int day){
-        long baseDate = data.startDay + (day * 24 * 60 * 60 * 1000);
+        long baseDate = data.getStartDay() + (day * 24 * 60 * 60 * 1000);
         Random random = new Random();
         String filename = fileNames.get(random.nextInt(fileNames.size()));
         String[] BMI_split = filename.split("_");
