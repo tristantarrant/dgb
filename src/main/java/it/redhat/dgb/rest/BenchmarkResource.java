@@ -38,8 +38,7 @@ public class BenchmarkResource {
     @POST
     @Path("load")
     public String autoLoad(BenchmarkLoaderConfiguration data) {
-
-        CompletableFuture<Void> task = CompletableFuture.runAsync(() -> loadEntries(data));
+        CompletableFuture.runAsync(() -> loadEntries(data));
         return "loading data entries in the SFTREC Cache. Check logs for results";
     }
 
@@ -57,8 +56,7 @@ public class BenchmarkResource {
     @GET
     @Path("size")
     public String getCacheSize(BenchmarkLoaderConfiguration data) {
-        LOGGER.info("requested cache size calculation");
-        CompletableFuture<Void> task = CompletableFuture.runAsync(() -> calculateSize(data));
+        CompletableFuture.runAsync(() -> calculateSize(data));
         return "calculating entries SIZE. Check logs for results.";
     }
 
