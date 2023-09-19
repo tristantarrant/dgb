@@ -12,26 +12,58 @@ import it.redhat.dgb.model.SftRec;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 
 @Path("query")
 public class QueryResource {
 
    @Inject
    @Remote("sftrec")
-   RemoteCache<String, SftRec> booksCache;
+   RemoteCache<String, SftRec> sftrecCache;
 
    @GET
    @Produces("application/json")
-   public List<SftRec> query(@PathParam("term") String term) {
-      Query<SftRec> query = Search.getQueryFactory(booksCache)
-            .create("from it.redhat.dgb.SftRec s where s.id_progressivo < :id_progressivo");
+   public List<SftRec> query() {
+      Query<SftRec> query = Search.getQueryFactory(sftrecCache)
+            .create("from it.redhat.dgb.SftRec s WHERE s.reporting_timestamp = 1681250400000");
       query.maxResults(100);
-      query.setParameter("id_progressivo", 10);
 
-      List<SftRec> books = query.execute().list();
-      Log.info(books);
-      return books;
+      List<SftRec> entries = query.execute().list();
+      Log.info(entries);
+      return entries;
    }
+
+   @GET
+   @Path("base")
+   @Produces("application/json")
+   public List<SftRec> base(@QueryParam("fromDate") long fromDate, @QueryParam("endDate") long endDate) {
+      System.out.println("======= " + fromDate + " ======= " + endDate);
+      Query<SftRec> query = Search.getQueryFactory(sftrecCache)
+            .create("from it.redhat.dgb.SftRec s WHERE s.received_Report_Date >= :fromDate AND s.received_Report_Date <= :endDate");
+      query.maxResults(100);
+      query.setParameter("fromDate", fromDate);
+      query.setParameter("endDate", endDate);
+
+      List<SftRec> entries = query.execute().list();
+      Log.info(entries);
+      return entries;
+   }
+
+   @GET
+   @Path("aggr")
+   @Produces("application/json")
+   public List<Object[]> aggregated(@QueryParam("fromDate") long fromDate, @QueryParam("endDate") long endDate) {
+      Query<Object[]> query = Search.getQueryFactory(sftrecCache)
+            .create("select count(*) from it.redhat.dgb.SftRec s WHERE s.received_Report_Date >= :fromDate AND s.received_Report_Date <= :endDate");
+      query.maxResults(100);
+      query.setParameter("fromDate", fromDate);
+      query.setParameter("endDate", endDate);
+
+      //List<SftRec> entries = query.execute().list();
+      List<Object[]> reslt = query.execute().list();
+      Log.info(reslt);
+      return reslt;
+   }
+
 }
