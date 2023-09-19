@@ -38,7 +38,6 @@ public class QueryResource {
    @Path("base")
    @Produces("application/json")
    public List<SftRec> base(@QueryParam("fromDate") long fromDate, @QueryParam("endDate") long endDate) {
-      System.out.println("======= " + fromDate + " ======= " + endDate);
       Query<SftRec> query = Search.getQueryFactory(sftrecCache)
             .create("from it.redhat.dgb.SftRec s WHERE s.received_Report_Date >= :fromDate AND s.received_Report_Date <= :endDate");
       query.maxResults(100);
