@@ -43,14 +43,11 @@ public class BenchmarkResource {
     @POST
     @Path("load")
     public String autoLoad(BenchmarkLoaderConfiguration data) {
-                System.out.println("========================= 0");
-
         CompletableFuture.runAsync(() -> loadEntries(data));
         return "loading data entries in the SFTREC Cache. Check logs for results";
     }
 
     private void loadEntries(BenchmarkLoaderConfiguration data){
-        System.out.println("========================= 1");
         String timeInHHMMSS = null;
         long globalEndTime = 0;
         long dailyStartTime = 0;
@@ -62,20 +59,14 @@ public class BenchmarkResource {
         long globalStartTime = System.currentTimeMillis();
         partialStartTime = globalStartTime;
         for(int i=0; i<data.getDays(); i++){
-        System.out.println("========================= 2");
             dailyStartTime = System.currentTimeMillis();
             for(int j=0; j<data.getDailyEntries(); j++){
-                        System.out.println("========================= 3");
-
                 String id = UUID.randomUUID().toString();
-                System.out.println("========================= !!!! 1");
                 SftRec recEntry = SftRecBuilder.build(data, i);
-                System.out.println("========================= !!!! 2");
                 sftrec_cache.put(id, recEntry);
-                        System.out.println("========================= 4");
                 counter++;
                 globalCounter++;
-                if(counter > 100000){
+                if(counter > 10000){
                     partialEndTime = System.currentTimeMillis();
                     Duration duration = Duration.ofMillis(partialEndTime - partialStartTime);
                     partialStartTime = partialEndTime;
