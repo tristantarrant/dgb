@@ -1,0 +1,21 @@
+{
+  "distributed-cache": {
+    "mode": "SYNC",
+    "owners": 2,
+    "statistics": true,
+    "encoding": {
+      "media-type": "application/x-protostream"
+    },
+    "locking": {
+      "isolation": "REPEATABLE_READ"
+    },
+    "indexing": {
+      "enabled": true,
+      "storage": "local-heap",
+      "startup-mode": "None",
+      "indexed-entities": [
+        "it.redhat.dgb.SftRec"
+      ]
+    }
+  }
+}
