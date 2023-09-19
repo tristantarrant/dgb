@@ -16,8 +16,9 @@ public class BenchmarkLoaderConfiguration {
     private String sessionName;
 
     public BenchmarkLoaderConfiguration(){
-        Random random = new Random();
-        this.sessionName = names.get(random.nextInt(names.size())) + "_" + names.get(random.nextInt(names.size()));
+        Random r1 = new Random();
+        Random r2 = new Random();
+        this.sessionName = names.get(r1.nextInt(names.size())) + "_" + names.get(r2.nextInt(names.size()));
     }
 
     public long getStartDay() {

@@ -1,0 +1,20 @@
+{
+    "sftrec": {
+      "distributed-cache": {
+        "mode": "SYNC",
+        "remote-timeout": "17500",
+        "statistics": true,
+        "encoding": {
+          "media-type": "application/x-protostream"
+        },
+        "locking": {
+          "concurrency-level": "1000",
+          "acquire-timeout": "15000",
+          "striping": false
+        },
+        "state-transfer": {
+          "timeout": "60000"
+        }
+      }
+    }
+}

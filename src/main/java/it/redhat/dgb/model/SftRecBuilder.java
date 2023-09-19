@@ -65,63 +65,6 @@ public class SftRecBuilder {
             "SFTREC",
             baseDate
         );
-
-        // data_di_caricamento -- equivale al momento in cui la entry viene processata
-        //rec.data_di_caricamento = java.lang.System.currentTimeMillis();
-
-        // id_progressivo
-        //Random random = new Random();
-        //rec.id_progressivo = random.nextInt();
-
-        // nome_file
-        //rec.nome_file = fileNames.get(random.nextInt(fileNames.size()));
-
-        // "Business_Message_Identifier": "R0047E-221117"
-        //String[] BMI_split = rec.nome_file.split("_");
-        //rec.Business_Message_Identifier = split[3];
-
-        // "Message_Definition_Identifier": "auth.080.001.02"
-        //rec.Message_Definition_Identifier = "auth.080.001.02";
-        //rec.Business_Service = "SFTR_PROD";
-
-        // "Creation_Date": 1668676333000
-        //rec.Creation_Date = baseDate + 36733;
-
-        // "Reporting_counterparty": "8156004F298245FBB836"
-        //rec.Reporting_counterparty = counterParties.get(random.nextInt(counterParties.size()));
-
-        // "UTI": "LCHCBF2210288850247BTAM20221028S"
-        ////rec.UTI = utis.get(random.nextInt(utis.size()));
-
-        // "Master_agreement_type": "OTHR"
-        //rec.Master_agreement_type = "OTHR";
-
-        // "Report_status": "CLRC | LNRC | PARD | RECO | UNPR"
-        //rec.Report_status = "CLRC | LNRC | PARD | RECO | UNPR";
-
-        // "Modification_status": "true"
-        //rec.Modification_status = String.valueOf(random.nextBoolean());
-
-        // "Loan_reconciliatio_n_status": "Reconciled"
-        //rec.Loan_reconciliatio_n_status = "Reconciled";
-
-        // "Collateral_reconciliation_status": "Reconciled"
-        //rec.Collateral_reconciliation_status = "Reconciled";
-
-        // "Technical_Record_Identification": "EUSFNANANASFTB56519251"
-        //rec.Technical_Record_Identification = rids.get(random.nextInt(rids.size()));
-
-        // "Data_di_ricezione": 1668639600000,   //Wed Nov 16 2022 23:00:00
-        //rec.Data_di_ricezione = baseDate;
-
-        // "Trade_repository": "TRDTI"
-        //rec.Trade_repository = rids.get(random.nextInt(treps.size()));
-
-        // "Flusso": "SFTREC"
-        //rec.Flusso = "SFTREC";
-
-        // "Received_Report_Date": 1668553200000
-        //rec.Received_Report_Date = baseDate;
  
         return rec;
     }

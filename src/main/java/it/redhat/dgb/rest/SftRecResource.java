@@ -21,7 +21,7 @@ import jakarta.ws.rs.core.MediaType;
 public class SftRecResource {
    
     @Inject
-    @Remote("sftrec") 
+    @Remote("consob_sftrec") 
     RemoteCache<String, SftRec> sftrec_cache;
 
     @GET
@@ -30,8 +30,8 @@ public class SftRecResource {
     }
 
     @POST
-    @Consumes
-    public String put(SftRec rec) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String create(SftRec rec) {
         // genereting id of the object
         String id = UUID.randomUUID().toString();
         sftrec_cache.put(id, rec);
