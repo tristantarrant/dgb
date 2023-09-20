@@ -109,6 +109,7 @@ public class SftRec implements Serializable {
         return Reporting_counterparty;
     }
     @ProtoField(number = 9)
+    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
     public String getUTI() {
         return UTI;
     }
@@ -122,6 +123,7 @@ public class SftRec implements Serializable {
         return Master_agreement_type;
     }
     @ProtoField(number = 12)
+    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
     public String getReport_status() {
         return Report_status;
     }
