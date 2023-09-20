@@ -75,7 +75,7 @@ public class BenchmarkResource {
                     long SS = duration.toSecondsPart();
                     timeInHHMMSS = String.format("%02d:%02d:%02d", HH, MM, SS);
                     counter = 0;
-                    this.log(data.getSessionName(), "inserted " + globalCounter + " entries, partial time frame (100k): " + timeInHHMMSS);
+                    this.log(data.getSessionName(), "inserted " + globalCounter + " entries, partial time frame (10k): " + timeInHHMMSS);
                 }
             }
             dailyEndTime = System.currentTimeMillis();
@@ -85,7 +85,7 @@ public class BenchmarkResource {
             long MM = duration.toMinutesPart();
             long SS = duration.toSecondsPart();
             timeInHHMMSS = String.format("%02d:%02d:%02d", HH, MM, SS);
-            this.log(data.getSessionName(), "\n\n==============================================================\n\n");
+            this.log(data.getSessionName(), "\n==============================================================");
             this.log(data.getSessionName(), "completed day " + i + " time frame for this day: " + timeInHHMMSS);
             this.log(data.getSessionName(), "==============================================================");
         }
@@ -95,7 +95,7 @@ public class BenchmarkResource {
         long MM = duration.toMinutesPart();
         long SS = duration.toSecondsPart();
         timeInHHMMSS = String.format("%02d:%02d:%02d", HH, MM, SS);
-        this.log(data.getSessionName(), "\n\n==============================================================\n\n");
+        this.log(data.getSessionName(), "\n==============================================================");
         this.log(data.getSessionName(), "inserted " + globalCounter + " entries, timeframe: " + timeInHHMMSS);
         this.log(data.getSessionName(), "==============================================================");
     }
