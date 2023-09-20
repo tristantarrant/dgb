@@ -1,14 +1,14 @@
 package it.redhat.dgb.rest;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.infinispan.client.hotrod.RemoteCache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import io.quarkus.infinispan.client.Remote;
+import io.quarkus.logging.Log;
 import it.redhat.dgb.model.BenchmarkLoaderConfiguration;
 import it.redhat.dgb.model.ObjectSizeFetcher;
 import it.redhat.dgb.model.SftRec;
@@ -25,14 +25,14 @@ import jakarta.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class BenchmarkResource {
-    private static final Logger LOGGER = LoggerFactory.getLogger("cdlc");
+    private final static int BULK_SIZE = 100;
    
     @Inject
     @Remote("sftrec") 
     RemoteCache<String, SftRec> sftrec_cache;
 
     private void log(String name, String msg){
-        LOGGER.info( "[" + name + "] " + msg);
+        Log.info( "[" + name + "] " + msg);
     }
     
     @GET
@@ -55,18 +55,26 @@ public class BenchmarkResource {
         long partialStartTime = 0;
         long partialEndTime = 0;
         int globalCounter = 0;
+        int bulkCounter = 0;
         int counter = 0;
         long globalStartTime = System.currentTimeMillis();
         partialStartTime = globalStartTime;
+        HashMap<String, SftRec> bulk = new HashMap<String, SftRec>();
         for(int i=0; i<data.getDays(); i++){
             dailyStartTime = System.currentTimeMillis();
             for(int j=0; j<data.getDailyEntries(); j++){
                 String id = UUID.randomUUID().toString();
                 SftRec recEntry = SftRecBuilder.build(data, i);
-                sftrec_cache.put(id, recEntry);
+                bulk.put(id, recEntry);
                 counter++;
+                bulkCounter++;
                 globalCounter++;
-                if(counter > 10000){
+                if(bulkCounter == BULK_SIZE){
+                    sftrec_cache.putAll(bulk);
+                    bulkCounter = 0;
+                    bulk.clear();
+                }
+                if(counter == 10000){
                     partialEndTime = System.currentTimeMillis();
                     Duration duration = Duration.ofMillis(partialEndTime - partialStartTime);
                     partialStartTime = partialEndTime;
@@ -85,7 +93,7 @@ public class BenchmarkResource {
             long MM = duration.toMinutesPart();
             long SS = duration.toSecondsPart();
             timeInHHMMSS = String.format("%02d:%02d:%02d", HH, MM, SS);
-            this.log(data.getSessionName(), "\n==============================================================");
+            this.log(data.getSessionName(), "==============================================================");
             this.log(data.getSessionName(), "completed day " + i + " time frame for this day: " + timeInHHMMSS);
             this.log(data.getSessionName(), "==============================================================");
         }
@@ -95,7 +103,7 @@ public class BenchmarkResource {
         long MM = duration.toMinutesPart();
         long SS = duration.toSecondsPart();
         timeInHHMMSS = String.format("%02d:%02d:%02d", HH, MM, SS);
-        this.log(data.getSessionName(), "\n==============================================================");
+        this.log(data.getSessionName(), "==============================================================");
         this.log(data.getSessionName(), "inserted " + globalCounter + " entries, timeframe: " + timeInHHMMSS);
         this.log(data.getSessionName(), "==============================================================");
     }

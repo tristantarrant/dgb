@@ -109,7 +109,7 @@ public class SftRec implements Serializable {
         return Reporting_counterparty;
     }
     @ProtoField(number = 9)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @ProtoDoc("@Field(index = Index.YES, store = Store.YES, analyze = Analyze.NO)")
     public String getUTI() {
         return UTI;
     }
@@ -123,7 +123,7 @@ public class SftRec implements Serializable {
         return Master_agreement_type;
     }
     @ProtoField(number = 12)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @ProtoDoc("@Field(index = Index.YES, store = Store.YES, analyze = Analyze.NO)")
     public String getReport_status() {
         return Report_status;
     }
@@ -141,12 +141,12 @@ public class SftRec implements Serializable {
         return No_Reconciliati_on_required;
     }
     @ProtoField(number = 16)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @ProtoDoc("@Field(index = Index.YES, store = Store.YES, analyze = Analyze.NO)")
     public String getMatching_status() {
         return Matching_status;
     }
     @ProtoField(number = 17)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @ProtoDoc("@Field(index = Index.YES, store = Store.YES, analyze = Analyze.NO)")
     public String getLoan_reconciliatio_n_status() {
         return Loan_reconciliatio_n_status;
     }
@@ -155,7 +155,7 @@ public class SftRec implements Serializable {
         return Reportable_loan_fields_subject_of_reconciliation;
     }
     @ProtoField(number = 19)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @ProtoDoc("@Field(index = Index.YES, store = Store.YES, analyze = Analyze.NO)")
     public String getCollateral_reconciliation_status() {
         return Collateral_reconciliation_status;
     }
