@@ -1,11 +1,11 @@
 package it.redhat.dgb.rest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
-import it.redhat.dgb.model.Report;
+import it.redhat.dgb.model.CsvReport;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.Search;
 import org.infinispan.query.dsl.Query;
@@ -44,26 +44,12 @@ public class QueryResource {
    @GET
    @Path("benchmark/{cacheSize}")
    @Produces("application/json")
-   public List<Report> benchmark(@PathParam("cacheSize") int cacheSize) {
-      List<Report> reports = new ArrayList<Report>();
-      StringBuffer buffer = new StringBuffer();
-      long startQ, endQ;
+   public String benchmark(@PathParam("cacheSize") int cacheSize) {
+      CsvReport csvReport = new CsvReport(queryString().size());
       for (Map.Entry<String, String> entry : queryString().entrySet()) {
-         Report report = new Report();
-         report.cache_size = cacheSize;
-         report.description = entry.getKey();
-         QueryFactory qf = Search.getQueryFactory(sftrecCache);
-         Query<SftRec> query = qf.create(queryString().get(entry.getKey()));
-         startQ = System.currentTimeMillis();
-         List<SftRec> recs = query.execute().list();
-         endQ = System.currentTimeMillis();
-         report.duration = endQ - startQ;
-         report.query_size = recs.size();
-         reports.add(report);
-         buffer.append(entry.getKey()).append(",").append(cacheSize).app
-         Log.info("===> query report: " + report);
+         CompletableFuture.runAsync(() -> executeBenchmarkQuery(entry.getKey(), cacheSize, csvReport));
       }
-      return reports;
+      return "benchmark started. Check logs for results\n";
    }
 
    @GET
@@ -129,4 +115,16 @@ public class QueryResource {
       return queries;
    }
 
+   private void executeBenchmarkQuery(String key, int cacheSize, CsvReport csv){
+      StringBuilder buffer = new StringBuilder();
+      buffer.append(key).append(",");
+      QueryFactory qf = Search.getQueryFactory(sftrecCache);
+      Query<SftRec> query = qf.create(queryString().get(key));
+      long startQ = System.currentTimeMillis();
+      List<SftRec> recs = query.execute().list();
+      long endQ = System.currentTimeMillis();
+      buffer.append(cacheSize).append(",").append(endQ - startQ).append(",").append(recs.size());
+      csv.add(buffer.toString());
+      Log.info("===> query report: " + buffer.toString());
+   }
 }
