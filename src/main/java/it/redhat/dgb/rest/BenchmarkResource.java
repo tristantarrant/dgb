@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import jakarta.ws.rs.*;
 import org.infinispan.client.hotrod.RemoteCache;
 
 import io.quarkus.infinispan.client.Remote;
@@ -14,11 +15,6 @@ import it.redhat.dgb.model.ObjectSizeFetcher;
 import it.redhat.dgb.model.SftRec;
 import it.redhat.dgb.model.SftRecBuilder;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("/benchmark")
@@ -26,6 +22,7 @@ import jakarta.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class BenchmarkResource {
     private final static int BULK_SIZE = 100;
+    private final static int daily_entries = 200000;
    
     @Inject
     @Remote("sftrec") 
@@ -44,6 +41,17 @@ public class BenchmarkResource {
     @Path("load")
     public String autoLoad(BenchmarkLoaderConfiguration data) {
         CompletableFuture.runAsync(() -> loadEntries(data));
+        return "loading data entries in the SFTREC Cache. Check logs for results";
+    }
+
+    @POST
+    @Path("{day}")
+    public String loadOneDay(@PathParam("day") int day) {
+        BenchmarkLoaderConfiguration configuration = new BenchmarkLoaderConfiguration()
+                .setDays(1)
+                .setDailyEntries(daily_entries)
+                .setStartDay(1672527600000L - (1000 * 60 * 60 * 24) + (1000L * 60 * 60 * 24 * day));
+        CompletableFuture.runAsync(() -> loadEntries(configuration));
         return "loading data entries in the SFTREC Cache. Check logs for results";
     }
 
