@@ -149,6 +149,7 @@ public class QueryResource {
       buffer.append(key).append(",");
       QueryFactory qf = Search.getQueryFactory(sftrecCache);
       Query<SftRec> query = qf.create(queryString().get(key));
+      Log.info("======>     " + queryString().get(key));
       long startQ = System.currentTimeMillis();
       List<SftRec> recs = query.execute().list();
       long endQ = System.currentTimeMillis();
