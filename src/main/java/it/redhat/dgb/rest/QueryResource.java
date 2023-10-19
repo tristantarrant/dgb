@@ -44,7 +44,7 @@ public class QueryResource {
    @GET
    @Path("benchmark/{querySet}/{cacheSize}")
    @Produces("application/json")
-   public String benchmark(@PathParam("cacheSize") String querySet, @PathParam("cacheSize") int cacheSize) {
+   public String benchmark(@PathParam("querySet") String querySet, @PathParam("cacheSize") int cacheSize) {
       CsvReport csvReport = new CsvReport(queryString().size());
       Map<String, String> queries = null;
       switch (querySet) {
