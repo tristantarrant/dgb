@@ -22,7 +22,7 @@ import jakarta.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class BenchmarkResource {
     private final static int BULK_SIZE = 100;
-    private final static int daily_entries = 200000;
+    private final static int daily_entries = 400000;
    
     @Inject
     @Remote("sftrec") 

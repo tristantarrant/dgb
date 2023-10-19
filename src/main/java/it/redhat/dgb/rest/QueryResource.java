@@ -42,11 +42,22 @@ public class QueryResource {
    }
 
    @GET
-   @Path("benchmark/{cacheSize}")
+   @Path("benchmark/{querySet}/{cacheSize}")
    @Produces("application/json")
-   public String benchmark(@PathParam("cacheSize") int cacheSize) {
+   public String benchmark(@PathParam("cacheSize") String querySet, @PathParam("cacheSize") int cacheSize) {
       CsvReport csvReport = new CsvReport(queryString().size());
-      for (Map.Entry<String, String> entry : queryString().entrySet()) {
+      Map<String, String> queries = null;
+      switch (querySet) {
+         case "base":
+            queries = queryString();
+            break;
+         case "WA":
+            queries = improvedQueryString();
+            break;
+         default:
+            throw new IllegalArgumentException("Invalid query set parameter: " + querySet);
+      }
+      for (Map.Entry<String, String> entry : queries.entrySet()) {
          CompletableFuture.runAsync(() -> executeBenchmarkQuery(entry.getKey(), cacheSize, csvReport));
       }
       return "benchmark started. Check logs for results\n";
@@ -112,6 +123,19 @@ public class QueryResource {
       queries.put("MTS_ONE_DAY", "SELECT matching_status, COUNT(uTI) FROM it.redhat.dgb.SftRec WHERE received_Report_Date >= 1672873200000 AND received_Report_Date <= 1672873200000 GROUP BY matching_status ORDER BY matching_status");
       queries.put("LRS_ONE_DAY", "SELECT loan_reconciliatio_n_status, COUNT(uTI) FROM it.redhat.dgb.SftRec WHERE received_Report_Date >= 1672873200000 AND received_Report_Date <= 1672873200000 GROUP BY loan_reconciliatio_n_status ORDER BY loan_reconciliatio_n_status");
       queries.put("CRS_ONE_DAY", "SELECT collateral_reconciliation_status, COUNT(uTI) FROM it.redhat.dgb.SftRec WHERE received_Report_Date >= 1672873200000 AND received_Report_Date <= 1672873200000 GROUP BY collateral_reconciliation_status ORDER BY collateral_reconciliation_status");
+      return queries;
+   }
+
+   private static Map<String, String> improvedQueryString(){
+      HashMap<String, String> queries = new HashMap<String, String>();
+      queries.put("RPS", "SELECT report_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY report_status ORDER BY report_status");
+      queries.put("RPS_WA", "SELECT report_status, uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = :report_status GROUP BY report_status ORDER BY report_status");
+      queries.put("MTS", "SELECT matching_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY matching_status ORDER BY matching_status");
+      queries.put("MTS_WA", "SELECT matching_status, uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and matching_status = :matching_status GROUP BY matching_status ORDER BY matching_status");
+      queries.put("LRS", "SELECT loan_reconciliatio_n_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY loan_reconciliatio_n_status ORDER BY loan_reconciliatio_n_status");
+      queries.put("LRS_WA", "SELECT loan_reconciliatio_n_status, uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and loan_reconciliatio_n_status = :loan_reconciliatio_n_status GROUP BY loan_reconciliatio_n_status ORDER BY loan_reconciliatio_n_status");
+      queries.put("CRS", "SELECT collateral_reconciliation_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY collateral_reconciliation_status ORDER BY collateral_reconciliation_status");
+      queries.put("CRS_WA", "SELECT collateral_reconciliation_status, uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and collateral_reconciliation_status = :collateral_reconciliation_status GROUP BY collateral_reconciliation_status ORDER BY collateral_reconciliation_status");
       return queries;
    }
 
