@@ -129,7 +129,12 @@ public class QueryResource {
    private static Map<String, String> improvedQueryString(){
       HashMap<String, String> queries = new HashMap<String, String>();
       //queries.put("RPS", "SELECT report_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY report_status ORDER BY report_status");
-      queries.put("RPS_WA", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = :CLRC GROUP BY report_status ORDER BY report_status");
+      //"CLRC | LNRC | PARD | RECO | UNPR"
+      queries.put("RPS_CLRC", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = CLRC GROUP BY report_status ORDER BY report_status");
+      queries.put("RPS_LNRC", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = LNRC GROUP BY report_status ORDER BY report_status");
+      queries.put("RPS_PARD", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = PARD GROUP BY report_status ORDER BY report_status");
+      queries.put("RPS_RECO", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = RECO GROUP BY report_status ORDER BY report_status");
+      queries.put("RPS_UNPR", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = UNPR GROUP BY report_status ORDER BY report_status");
       //queries.put("MTS", "SELECT matching_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY matching_status ORDER BY matching_status");
       //queries.put("MTS_WA", "SELECT matching_status, uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and matching_status = :matching_status GROUP BY matching_status ORDER BY matching_status");
       //queries.put("LRS", "SELECT loan_reconciliatio_n_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY loan_reconciliatio_n_status ORDER BY loan_reconciliatio_n_status");
