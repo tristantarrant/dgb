@@ -11,6 +11,7 @@ public class SftRecBuilder {
     static List<String> utis = new ArrayList<>(Arrays.asList("LCHCBF2210288850247BTAM20221028S", "E028156004F298245FBB836CAD01SLGG20221024220659009452", "CADPDTTERZI22545430", "E028156004F298245FBB836CAD01SLGG20221019220646004932", "E028156004F298245FBB836CAD01SLGG20221024220659005259", "E028156004F298245FBB836CAD01SLGG20221026221037009025"));
     static List<String> rids = new ArrayList<>(Arrays.asList("0038042588000E028156004F298245FBB836CAD01SLGG202210262210370090258156004F298245FBB8362", "EUSFNANANASFTB56519251"));
     static List<String> treps = new ArrayList<>(Arrays.asList("TRRGS", "TRDTI"));
+    static List<String> rstats = new ArrayList<>(Arrays.asList("CLRC", "LNRC", "PARD", "RECO", "UNPR"));
     
     public static SftRec build(BenchmarkLoaderConfiguration data, int day){
         long baseDate = data.getStartDay() + (day * 24 * 60 * 60 * 1000);
@@ -19,7 +20,7 @@ public class SftRecBuilder {
         String[] BMI_split = filename.split("_");
         String bmi = BMI_split[3];
 
-        SftRec rec = new SftRec(
+        return new SftRec(
             // data_di_caricamento -- equivale al momento in cui la entry viene processata
             java.lang.System.currentTimeMillis(),
             // id_progressivo
@@ -41,7 +42,8 @@ public class SftRecBuilder {
             // Master_agreement_type: string always "OTHR"
             "OTHR",
             // Report_status
-            "CLRC | LNRC | PARD | RECO | UNPR",
+            //"CLRC | LNRC | PARD | RECO | UNPR",
+            rstats.get(random.nextInt(rstats.size())),
             // Reporting_timestamp: NOT FOUND in the the examples, using basedate
             baseDate,
             // "Modification_status": a string that can be "true" or "false"
@@ -65,7 +67,5 @@ public class SftRecBuilder {
             "SFTREC",
             baseDate
         );
- 
-        return rec;
     }
 }
