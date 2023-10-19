@@ -43,8 +43,8 @@ public class QueryResource {
    @Path("benchmark/{cacheSize}")
    @Produces("application/json")
    public String benchmark(@PathParam("cacheSize") int cacheSize) {
-      CsvReport csvReport = new CsvReport(queryString().size());
       List<String> query_names = new ArrayList<>(Arrays.asList("RPS_CLRC", "RPS_LNRC", "RPS_PARD", "RPS_RECO", "RPS_UNPR"));;
+      CsvReport csvReport = new CsvReport(query_names.size());
       for (String name : query_names) {
          CompletableFuture.runAsync(() -> executeBenchmarkQuery(name, cacheSize, csvReport));
       }
@@ -124,7 +124,6 @@ public class QueryResource {
       buffer.append(key).append(",");
       QueryFactory qf = Search.getQueryFactory(sftrecCache);
       Query<SftRec> query = qf.create(queryString().get(key));
-      Log.info("======>     " + queryString().get(key));
       long startQ = System.currentTimeMillis();
       List<SftRec> recs = query.execute().list();
       long endQ = System.currentTimeMillis();
