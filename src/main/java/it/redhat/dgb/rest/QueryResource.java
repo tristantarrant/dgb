@@ -44,7 +44,7 @@ public class QueryResource {
    @Produces("application/json")
    public String benchmark(@PathParam("cacheSize") int cacheSize) {
       CsvReport csvReport = new CsvReport(queryString().size());
-      List<String> query_names = new ArrayList<>(Arrays.asList("RPS_CLRC", "RPS_LNRC"));;
+      List<String> query_names = new ArrayList<>(Arrays.asList("RPS_CLRC", "RPS_LNRC", "RPS_PARD", "RPS_RECO", "RPS_UNPR"));;
       for (String name : query_names) {
          CompletableFuture.runAsync(() -> executeBenchmarkQuery(name, cacheSize, csvReport));
       }
@@ -111,11 +111,11 @@ public class QueryResource {
       queries.put("MTS_ONE_DAY", "SELECT matching_status, COUNT(uTI) FROM it.redhat.dgb.SftRec WHERE received_Report_Date >= 1672873200000 AND received_Report_Date <= 1672873200000 GROUP BY matching_status ORDER BY matching_status");
       queries.put("LRS_ONE_DAY", "SELECT loan_reconciliatio_n_status, COUNT(uTI) FROM it.redhat.dgb.SftRec WHERE received_Report_Date >= 1672873200000 AND received_Report_Date <= 1672873200000 GROUP BY loan_reconciliatio_n_status ORDER BY loan_reconciliatio_n_status");
       queries.put("CRS_ONE_DAY", "SELECT collateral_reconciliation_status, COUNT(uTI) FROM it.redhat.dgb.SftRec WHERE received_Report_Date >= 1672873200000 AND received_Report_Date <= 1672873200000 GROUP BY collateral_reconciliation_status ORDER BY collateral_reconciliation_status");
-      queries.put("RPS_CLRC", "SELECT report_status uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = CLRC GROUP BY report_status ORDER BY report_status");
-      queries.put("RPS_LNRC", "SELECT report_status uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = LNRC GROUP BY report_status ORDER BY report_status");
-      queries.put("RPS_PARD", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = PARD GROUP BY report_status ORDER BY report_status");
-      queries.put("RPS_RECO", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = RECO GROUP BY report_status ORDER BY report_status");
-      queries.put("RPS_UNPR", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = UNPR GROUP BY report_status ORDER BY report_status");
+      queries.put("RPS_CLRC", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = CLRC");
+      queries.put("RPS_LNRC", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = LNRC");
+      queries.put("RPS_PARD", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = PARD");
+      queries.put("RPS_RECO", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = RECO");
+      queries.put("RPS_UNPR", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = UNPR");
       return queries;
    }
 
