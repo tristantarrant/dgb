@@ -125,6 +125,7 @@ public class SftRec implements Serializable {
     }
     @ProtoField(number = 12)
     @Basic(sortable = true)
+    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
     public String getReport_status() {
         return Report_status;
     }
@@ -143,11 +144,13 @@ public class SftRec implements Serializable {
     }
     @ProtoField(number = 16)
     @Basic(sortable = true)
+    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
     public String getMatching_status() {
         return Matching_status;
     }
     @ProtoField(number = 17)
     @Basic(sortable = true)
+    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
     public String getLoan_reconciliatio_n_status() {
         return Loan_reconciliatio_n_status;
     }
@@ -157,6 +160,7 @@ public class SftRec implements Serializable {
     }
     @ProtoField(number = 19)
     @Basic(sortable = true)
+    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
     public String getCollateral_reconciliation_status() {
         return Collateral_reconciliation_status;
     }
