@@ -128,14 +128,14 @@ public class QueryResource {
 
    private static Map<String, String> improvedQueryString(){
       HashMap<String, String> queries = new HashMap<String, String>();
-      queries.put("RPS", "SELECT report_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY report_status ORDER BY report_status");
-      queries.put("RPS_WA", "SELECT report_status, uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = :report_status GROUP BY report_status ORDER BY report_status");
-      queries.put("MTS", "SELECT matching_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY matching_status ORDER BY matching_status");
-      queries.put("MTS_WA", "SELECT matching_status, uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and matching_status = :matching_status GROUP BY matching_status ORDER BY matching_status");
-      queries.put("LRS", "SELECT loan_reconciliatio_n_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY loan_reconciliatio_n_status ORDER BY loan_reconciliatio_n_status");
-      queries.put("LRS_WA", "SELECT loan_reconciliatio_n_status, uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and loan_reconciliatio_n_status = :loan_reconciliatio_n_status GROUP BY loan_reconciliatio_n_status ORDER BY loan_reconciliatio_n_status");
-      queries.put("CRS", "SELECT collateral_reconciliation_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY collateral_reconciliation_status ORDER BY collateral_reconciliation_status");
-      queries.put("CRS_WA", "SELECT collateral_reconciliation_status, uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and collateral_reconciliation_status = :collateral_reconciliation_status GROUP BY collateral_reconciliation_status ORDER BY collateral_reconciliation_status");
+      //queries.put("RPS", "SELECT report_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY report_status ORDER BY report_status");
+      queries.put("RPS_WA", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and report_status = :CLRC GROUP BY report_status ORDER BY report_status");
+      //queries.put("MTS", "SELECT matching_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY matching_status ORDER BY matching_status");
+      //queries.put("MTS_WA", "SELECT matching_status, uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and matching_status = :matching_status GROUP BY matching_status ORDER BY matching_status");
+      //queries.put("LRS", "SELECT loan_reconciliatio_n_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY loan_reconciliatio_n_status ORDER BY loan_reconciliatio_n_status");
+      //queries.put("LRS_WA", "SELECT loan_reconciliatio_n_status, uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and loan_reconciliatio_n_status = :loan_reconciliatio_n_status GROUP BY loan_reconciliatio_n_status ORDER BY loan_reconciliatio_n_status");
+      //queries.put("CRS", "SELECT collateral_reconciliation_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY collateral_reconciliation_status ORDER BY collateral_reconciliation_status");
+      //queries.put("CRS_WA", "SELECT collateral_reconciliation_status, uTI FROM it.redhat.dgb.SftRec WHERE uIT is not NULL and collateral_reconciliation_status = :collateral_reconciliation_status GROUP BY collateral_reconciliation_status ORDER BY collateral_reconciliation_status");
       return queries;
    }
 
