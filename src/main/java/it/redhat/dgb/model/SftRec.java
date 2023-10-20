@@ -78,116 +78,133 @@ public class SftRec implements Serializable {
     }
 
     @ProtoField(number = 2)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @Basic
     public Long getId_progressivo() {
         return id_progressivo;
     }
 
     @ProtoField(number = 3)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @Basic
     public String getNome_file() {
         return nome_file;
     }
+
     @ProtoField(number = 4)
     public String getBusiness_Message_Identifier() {
         return Business_Message_Identifier;
     }
+
     @ProtoField(number = 5)
     public String getMessage_Definition_Identifier() {
         return Message_Definition_Identifier;
     }
+
     @ProtoField(number = 6)
     public String getBusiness_Service() {
         return Business_Service;
     }
+
     @ProtoField(number = 7)
     public Long getCreation_Date() {
         return Creation_Date;
     }
+
     @ProtoField(number = 8)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @Basic
     public String getReporting_counterparty() {
         return Reporting_counterparty;
     }
+
     @ProtoField(number = 9)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @Basic
     public String getUTI() {
         return UTI;
     }
+
     @ProtoField(number = 10)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @Basic
     public String getOther_counterparty() {
         return Other_counterparty;
     }
+
     @ProtoField(number = 11)
     public String getMaster_agreement_type() {
         return Master_agreement_type;
     }
+
     @ProtoField(number = 12)
-    @Basic(sortable = true)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @Basic(sortable = true, aggregable = true)
     public String getReport_status() {
         return Report_status;
     }
+
     @ProtoField(number = 13)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @Basic
     public Long getReporting_timestamp() {
         return Reporting_timestamp;
     }
+
     @ProtoField(number = 14)
     public String getModification_status() {
         return Modification_status;
     }
+
     @ProtoField(number = 15)
     public String getNo_Reconciliati_on_required() {
         return No_Reconciliati_on_required;
     }
+
     @ProtoField(number = 16)
-    @Basic(sortable = true)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @Basic(sortable = true, aggregable = true)
     public String getMatching_status() {
         return Matching_status;
     }
+
     @ProtoField(number = 17)
-    @Basic(sortable = true)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @Basic(sortable = true, aggregable = true)
     public String getLoan_reconciliatio_n_status() {
         return Loan_reconciliatio_n_status;
     }
+
     @ProtoField(number = 18)
     public String getReportable_loan_fields_subject_of_reconciliation() {
         return Reportable_loan_fields_subject_of_reconciliation;
     }
+
     @ProtoField(number = 19)
-    @Basic(sortable = true)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @Basic(sortable = true, aggregable = true)
     public String getCollateral_reconciliation_status() {
         return Collateral_reconciliation_status;
     }
+
     @ProtoField(number = 20)
     public String getReportable_collateral_fields_subject_of_reconciliation() {
         return Reportable_collateral_fields_subject_of_reconciliation;
     }
+
     @ProtoField(number = 21)
     public String getTechnical_Record_Identification() {
         return Technical_Record_Identification;
     }
+
     @ProtoField(number = 22)
     public Long getData_di_ricezione() {
         return Data_di_ricezione;
     }
+
     @ProtoField(number = 23)
     public String getTrade_repository() {
         return Trade_repository;
     }
+
     @ProtoField(number = 24)
     public String getFlusso() {
         return Flusso;
     }
+
     @ProtoField(number = 25)
-    @ProtoDoc("@Field(index = Index.YES, store = Store.NO, analyze = Analyze.NO)")
+    @Basic
     public Long getReceived_Report_Date() {
         return Received_Report_Date;
     }
-
 }
