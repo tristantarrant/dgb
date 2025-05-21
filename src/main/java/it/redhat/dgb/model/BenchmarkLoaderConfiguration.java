@@ -7,18 +7,18 @@ import java.util.Random;
 
 public class BenchmarkLoaderConfiguration {
     
-    private static List<String> names = new ArrayList<>(Arrays.asList("nIpCnCHngs", "SjRCEUMVUA", "yCnRsmYJkU", "tnTwBfhlKS", "yUkSWlpgar",
+    private static final List<String> NAMES = new ArrayList<>(Arrays.asList("nIpCnCHngs", "SjRCEUMVUA", "yCnRsmYJkU", "tnTwBfhlKS", "yUkSWlpgar",
             "nUlUqHIAhZ", "hcrtLuwqqg", "fIemKwqlKP", "FKVEdEVEoM", "ziSLidpllW", "obFEEdGcvE", "VpqRKcZmLK", "kmOCgJsRXe", "xCBehuaihp", "kCNSrZbFqF"));
     
     private long startDay;
     private int days;
     private int dailyEntries;
-    private String sessionName;
+    private final String sessionName;
 
     public BenchmarkLoaderConfiguration(){
         Random r1 = new Random();
         Random r2 = new Random();
-        this.sessionName = names.get(r1.nextInt(names.size())) + "_" + names.get(r2.nextInt(names.size()));
+        this.sessionName = NAMES.get(r1.nextInt(NAMES.size())) + "_" + NAMES.get(r2.nextInt(NAMES.size()));
     }
 
     public long getStartDay() {

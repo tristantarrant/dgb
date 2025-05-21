@@ -1,16 +1,16 @@
 package it.redhat.dgb.model;
 
-import io.quarkus.logging.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import io.quarkus.logging.Log;
+
 public class CsvReport {
-    private List<String> csv;
-    private int size;
+    private final List<String> csv;
+    private final int size;
 
     public CsvReport(int size){
-        this.csv = new ArrayList<String>();
+        this.csv = new ArrayList<>();
         this.size = size;
     }
 

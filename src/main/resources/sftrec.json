@@ -1,17 +1,33 @@
 {
   "distributed-cache": {
     "mode": "SYNC",
+    "remote-timeout": 30000,
     "owners": 2,
     "statistics": true,
     "encoding": {
       "media-type": "application/x-protostream"
     },
     "locking": {
-      "isolation": "REPEATABLE_READ"
+      "acquire-timeout": 20000
+    },
+    "persistence": {
+      "passivation": false,
+      "file-store": {
+        "purge": false,
+        "shared": false,
+        "data": {
+          "path": "data"
+        },
+        "index": {
+          "path": "index"
+        },
+        "write-behind": {
+          "modification-queue-size": 2048
+        }
+      }
     },
     "indexing": {
       "enabled": true,
-      "storage": "local-heap",
       "startup-mode": "None",
       "indexed-entities": [
         "it.redhat.dgb.SftRec"

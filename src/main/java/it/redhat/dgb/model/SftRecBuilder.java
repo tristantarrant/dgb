@@ -14,7 +14,7 @@ public class SftRecBuilder {
     static List<String> rstats = new ArrayList<>(Arrays.asList("CLRC", "LNRC", "PARD", "RECO", "UNPR"));
     
     public static SftRec build(BenchmarkLoaderConfiguration data, int day){
-        long baseDate = data.getStartDay() + (day * 24 * 60 * 60 * 1000);
+        long baseDate = data.getStartDay() + ((long) day * 24 * 60 * 60 * 1000);
         Random random = new Random();
         String filename = fileNames.get(random.nextInt(fileNames.size()));
         String[] BMI_split = filename.split("_");
@@ -44,7 +44,7 @@ public class SftRecBuilder {
             // Report_status
             //"CLRC | LNRC | PARD | RECO | UNPR",
             rstats.get(random.nextInt(rstats.size())),
-            // Reporting_timestamp: NOT FOUND in the the examples, using basedate
+            // Reporting_timestamp: NOT FOUND in the examples, using basedate
             baseDate,
             // "Modification_status": a string that can be "true" or "false"
             String.valueOf(random.nextBoolean()),

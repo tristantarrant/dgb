@@ -1,9 +1,9 @@
 package it.redhat.dgb.model;
 
 import org.infinispan.protostream.GeneratedSchema;
-import org.infinispan.protostream.annotations.AutoProtoSchemaBuilder;
+import org.infinispan.protostream.annotations.ProtoSchema;
 
-@AutoProtoSchemaBuilder(includeClasses = SftRec.class,
+@ProtoSchema(includeClasses = SftRec.class,
                         schemaPackageName = "it.redhat.dgb",
                         schemaFilePath = "proto",
                         schemaFileName = "dgb.proto")

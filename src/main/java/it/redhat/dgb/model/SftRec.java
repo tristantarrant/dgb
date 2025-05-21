@@ -4,37 +4,36 @@ import java.io.Serializable;
 
 import org.infinispan.api.annotations.indexing.Basic;
 import org.infinispan.api.annotations.indexing.Indexed;
-import org.infinispan.protostream.annotations.ProtoDoc;
 import org.infinispan.protostream.annotations.ProtoFactory;
 import org.infinispan.protostream.annotations.ProtoField;
 
 @Indexed
 public class SftRec implements Serializable {
-    private Long data_di_caricamento;
-    private Long id_progressivo;
-    private String nome_file;
-    private String Business_Message_Identifier;
-    private String Message_Definition_Identifier;  // 5
-    private String Business_Service;
-    private Long Creation_Date;
-    private String Reporting_counterparty;
-    private String UTI;
-    private String Other_counterparty;  // 10
-    private String Master_agreement_type;
-    private String Report_status;
-    private Long Reporting_timestamp;
-    private String Modification_status;
-    private String No_Reconciliati_on_required;  // 15
-    private String Matching_status;
-    private String Loan_reconciliatio_n_status;
-    private String Reportable_loan_fields_subject_of_reconciliation;
-    private String Collateral_reconciliation_status;
-    private String Reportable_collateral_fields_subject_of_reconciliation;  // 20
-    private String Technical_Record_Identification;
-    private Long Data_di_ricezione;
-    private String Trade_repository;
-    private String Flusso;
-    private Long Received_Report_Date;
+    private final Long data_di_caricamento;
+    private final Long id_progressivo;
+    private final String nome_file;
+    private final String Business_Message_Identifier;
+    private final String Message_Definition_Identifier;  // 5
+    private final String Business_Service;
+    private final Long Creation_Date;
+    private final String Reporting_counterparty;
+    private final String UTI;
+    private final String Other_counterparty;  // 10
+    private final String Master_agreement_type;
+    private final String Report_status;
+    private final Long Reporting_timestamp;
+    private final String Modification_status;
+    private final String No_Reconciliati_on_required;  // 15
+    private final String Matching_status;
+    private final String Loan_reconciliatio_n_status;
+    private final String Reportable_loan_fields_subject_of_reconciliation;
+    private final String Collateral_reconciliation_status;
+    private final String Reportable_collateral_fields_subject_of_reconciliation;  // 20
+    private final String Technical_Record_Identification;
+    private final Long Data_di_ricezione;
+    private final String Trade_repository;
+    private final String Flusso;
+    private final Long Received_Report_Date;
 
     @ProtoFactory
     public SftRec(Long data_di_caricamento, Long id_progressivo, String nome_file, String business_Message_Identifier,
@@ -78,13 +77,13 @@ public class SftRec implements Serializable {
     }
 
     @ProtoField(number = 2)
-    @Basic
+    @Basic(sortable = true, aggregable = true)
     public Long getId_progressivo() {
         return id_progressivo;
     }
 
     @ProtoField(number = 3)
-    @Basic
+    @Basic(sortable = true, aggregable = true)
     public String getNome_file() {
         return nome_file;
     }
@@ -110,19 +109,19 @@ public class SftRec implements Serializable {
     }
 
     @ProtoField(number = 8)
-    @Basic
+    @Basic(sortable = true, aggregable = true)
     public String getReporting_counterparty() {
         return Reporting_counterparty;
     }
 
     @ProtoField(number = 9)
-    @Basic
+    @Basic(sortable = true, aggregable = true)
     public String getUTI() {
         return UTI;
     }
 
     @ProtoField(number = 10)
-    @Basic
+    @Basic(sortable = true, aggregable = true)
     public String getOther_counterparty() {
         return Other_counterparty;
     }
@@ -139,7 +138,7 @@ public class SftRec implements Serializable {
     }
 
     @ProtoField(number = 13)
-    @Basic
+    @Basic(sortable = true, aggregable = true)
     public Long getReporting_timestamp() {
         return Reporting_timestamp;
     }
@@ -203,7 +202,7 @@ public class SftRec implements Serializable {
     }
 
     @ProtoField(number = 25)
-    @Basic
+    @Basic(sortable = true, aggregable = true)
     public Long getReceived_Report_Date() {
         return Received_Report_Date;
     }

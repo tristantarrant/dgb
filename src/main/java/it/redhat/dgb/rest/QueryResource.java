@@ -1,16 +1,18 @@
 package it.redhat.dgb.rest;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import it.redhat.dgb.model.CsvReport;
 import org.infinispan.client.hotrod.RemoteCache;
-import org.infinispan.client.hotrod.Search;
-import org.infinispan.query.dsl.Query;
-import org.infinispan.query.dsl.QueryFactory;
+import org.infinispan.commons.api.query.Query;
 
 import io.quarkus.infinispan.client.Remote;
 import io.quarkus.logging.Log;
+import it.redhat.dgb.model.CsvReport;
 import it.redhat.dgb.model.SftRec;
 import it.redhat.dgb.model.TimeFormatter;
 import jakarta.inject.Inject;
@@ -30,8 +32,7 @@ public class QueryResource {
    @GET
    @Produces("application/json")
    public List<SftRec> simple() {
-      Query<SftRec> query = Search.getQueryFactory(sftrecCache)
-            .create("from it.redhat.dgb.SftRec s WHERE s.reporting_timestamp = 1681250400000");
+      Query<SftRec> query = sftrecCache.query("from it.redhat.dgb.SftRec s WHERE s.reporting_timestamp = 1681250400000");
       query.maxResults(100);
 
       List<SftRec> entries = query.execute().list();
@@ -55,8 +56,7 @@ public class QueryResource {
    @Path("base")
    @Produces("application/json")
    public List<SftRec> base(@QueryParam("fromDate") long fromDate, @QueryParam("endDate") long endDate) {
-      Query<SftRec> query = Search.getQueryFactory(sftrecCache)
-            .create("from it.redhat.dgb.SftRec s WHERE s.received_Report_Date >= :fromDate AND s.received_Report_Date <= :endDate");
+      Query<SftRec> query = sftrecCache.query("from it.redhat.dgb.SftRec s WHERE s.received_Report_Date >= :fromDate AND s.received_Report_Date <= :endDate");
       query.maxResults(100);
       query.setParameter("fromDate", fromDate);
       query.setParameter("endDate", endDate);
@@ -70,13 +70,11 @@ public class QueryResource {
    @Path("aggr")
    @Produces("application/json")
    public List<Object[]> aggregated(@QueryParam("fromDate") long fromDate, @QueryParam("endDate") long endDate) {
-      Query<Object[]> query = Search.getQueryFactory(sftrecCache)
-            .create("select count(uTI) from it.redhat.dgb.SftRec s WHERE s.received_Report_Date >= :fromDate AND s.received_Report_Date <= :endDate");
+      Query<Object[]> query = sftrecCache.query("select count(uTI) from it.redhat.dgb.SftRec s WHERE s.received_Report_Date >= :fromDate AND s.received_Report_Date <= :endDate");
       query.maxResults(100);
       query.setParameter("fromDate", fromDate);
       query.setParameter("endDate", endDate);
 
-      //List<SftRec> entries = query.execute().list();
       List<Object[]> reslt = query.execute().list();
       Log.info(reslt);
       return reslt;
@@ -87,8 +85,7 @@ public class QueryResource {
    @Produces("application/json")
    public List<SftRec> query(@PathParam("type") String type) {
       // Remote Query, using protobuf
-      QueryFactory qf = Search.getQueryFactory(sftrecCache);
-      Query<SftRec> query = qf.create(queryString().get(type));
+      Query<SftRec> query = sftrecCache.query(queryString().get(type));
       long startQuery = System.currentTimeMillis();
       List<SftRec> recs = query.execute().list();
       long endQuery = System.currentTimeMillis();
@@ -98,7 +95,7 @@ public class QueryResource {
    }
 
    private static Map<String, String> queryString(){
-      HashMap<String, String> queries = new HashMap<String, String>();
+      HashMap<String, String> queries = new HashMap<>();
       queries.put("RPS", "SELECT report_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY report_status ORDER BY report_status");
       queries.put("MTS", "SELECT matching_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY matching_status ORDER BY matching_status");
       queries.put("LRS", "SELECT loan_reconciliatio_n_status, COUNT(uTI) FROM it.redhat.dgb.SftRec GROUP BY loan_reconciliatio_n_status ORDER BY loan_reconciliatio_n_status");
@@ -111,19 +108,18 @@ public class QueryResource {
       queries.put("MTS_ONE_DAY", "SELECT matching_status, COUNT(uTI) FROM it.redhat.dgb.SftRec WHERE received_Report_Date >= 1672873200000 AND received_Report_Date <= 1672873200000 GROUP BY matching_status ORDER BY matching_status");
       queries.put("LRS_ONE_DAY", "SELECT loan_reconciliatio_n_status, COUNT(uTI) FROM it.redhat.dgb.SftRec WHERE received_Report_Date >= 1672873200000 AND received_Report_Date <= 1672873200000 GROUP BY loan_reconciliatio_n_status ORDER BY loan_reconciliatio_n_status");
       queries.put("CRS_ONE_DAY", "SELECT collateral_reconciliation_status, COUNT(uTI) FROM it.redhat.dgb.SftRec WHERE received_Report_Date >= 1672873200000 AND received_Report_Date <= 1672873200000 GROUP BY collateral_reconciliation_status ORDER BY collateral_reconciliation_status");
-      queries.put("RPS_CLRC", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = \'CLRC\'");
-      queries.put("RPS_LNRC", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = \'LNRC\'");
-      queries.put("RPS_PARD", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = \'PARD\'");
-      queries.put("RPS_RECO", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = \'RECO\'");
-      queries.put("RPS_UNPR", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = \'UNPR\'");
+      queries.put("RPS_CLRC", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = 'CLRC'");
+      queries.put("RPS_LNRC", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = 'LNRC'");
+      queries.put("RPS_PARD", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = 'PARD'");
+      queries.put("RPS_RECO", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = 'RECO'");
+      queries.put("RPS_UNPR", "SELECT report_status FROM it.redhat.dgb.SftRec WHERE report_status = 'UNPR'");
       return queries;
    }
 
    private void executeBenchmarkQuery(String key, int cacheSize, CsvReport csv){
       StringBuilder buffer = new StringBuilder();
       buffer.append(key).append(",");
-      QueryFactory qf = Search.getQueryFactory(sftrecCache);
-      Query<SftRec> query = qf.create(queryString().get(key));
+      Query<SftRec> query = sftrecCache.query(queryString().get(key));
       long startQ = System.currentTimeMillis();
       List<SftRec> recs = query.execute().list();
       long endQ = System.currentTimeMillis();
