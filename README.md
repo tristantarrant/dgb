@@ -9,7 +9,7 @@ This is the project to benchmark the RFI.
 
 ## Run
 
-`./mvnw quarkus:run`
+`java -Dquarkus.infinispan-client.hosts=<host:port> -jar target/quarkus-app/quarkus-run.jar`
 
 ## Invocations
 
